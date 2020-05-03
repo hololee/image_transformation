@@ -70,88 +70,87 @@ def rotation(image, angle, method):
 
             elif method == "bicubic":
                 try:
-                    f00 = image[x, y]
+                    f00 = image[x_lt, y_lt]
                 except:
                     f00 = 0
                 try:
-                    f01 = image[x, y + 1]
+                    f01 = image[x_lt, y_lt + 1]
                 except:
                     f01 = 0
                 try:
-                    f10 = image[x + 1, y]
+                    f10 = image[x_lt + 1, y_lt]
                 except:
                     f10 = 0
                 try:
-                    f11 = image[x + 1, y + 1]
+                    f11 = image[x_lt + 1, y_lt + 1]
                 except:
                     f11 = 0
                 try:
-                    fx00 = (image[x + 1, y] - image[x - 1, y]) / 2
+                    fx00 = (image[x_lt + 1, y_lt] - image[x_lt - 1, y_lt]) / 2
                 except:
                     fx00 = 0
                 try:
-                    fx10 = (image[x + 2, y] - image[x, y]) / 2
+                    fx10 = (image[x_lt + 2, y_lt] - image[x_lt, y_lt]) / 2
                 except:
                     fx10 = 0
                 try:
-                    fx01 = (image[x + 1, y + 1] - image[x - 1, y + 1]) / 2
+                    fx01 = (image[x_lt + 1, y_lt + 1] - image[x_lt - 1, y_lt + 1]) / 2
                 except:
                     fx01 = 0
                 try:
-                    fx11 = (image[x + 2, y + 1] - image[x, y + 1]) / 2
+                    fx11 = (image[x_lt + 2, y_lt + 1] - image[x_lt, y_lt + 1]) / 2
                 except:
                     fx11 = 0
                 try:
-                    fy00 = (image[x, y + 1] - image[x, y - 1]) / 2
+                    fy00 = (image[x_lt, y_lt + 1] - image[x_lt, y_lt - 1]) / 2
                 except:
                     fy00 = 0
                 try:
-                    fy10 = (image[x, y + 2] - image[x, y]) / 2
+                    fy10 = (image[x_lt, y_lt + 2] - image[x_lt, y_lt]) / 2
                 except:
                     fy10 = 0
                 try:
-                    fy01 = (image[x + 1, y + 1] - image[x + 1, y - 1]) / 2
+                    fy01 = (image[x_lt + 1, y_lt + 1] - image[x_lt + 1, y_lt - 1]) / 2
                 except:
                     fy01 = 0
                 try:
-                    fy11 = (image[x + 1, y + 2] - image[x + 1, y]) / 2
+                    fy11 = (image[x_lt + 1, y_lt + 2] - image[x_lt + 1, y_lt]) / 2
                 except:
                     fy11 = 0
                 try:
-                    fxy00 = (image[x - 1, y - 1] - image[x - 1, y + 1] - image[x + 1, y - 1] + image[x + 1, y + 1]) / 4
+                    fxy00 = (image[x_lt - 1, y_lt - 1] - image[x_lt - 1, y_lt + 1] - image[x_lt + 1, y_lt - 1] + image[x_lt + 1, y_lt + 1]) / 4
                 except:
                     fxy00 = 0
                 try:
-                    fxy10 = (image[x, y - 1] - image[x, y + 1] - image[x + 2, y - 1] + image[x + 2, y + 1]) / 4
+                    fxy10 = (image[x_lt, y_lt - 1] - image[x_lt, y_lt + 1] - image[x_lt + 2, y_lt - 1] + image[x_lt + 2, y_lt + 1]) / 4
                 except:
                     fxy10 = 0
                 try:
-                    fxy01 = (image[x - 1, y] - image[x - 1, y + 2] - image[x + 1, y] + image[x + 1, y + 2]) / 4
+                    fxy01 = (image[x_lt - 1, y_lt] - image[x_lt - 1, y_lt + 2] - image[x_lt + 1, y_lt] + image[x_lt + 1, y_lt + 2]) / 4
                 except:
                     fxy01 = 0
                 try:
-                    fxy11 = (image[x, y] - image[x, y + 2] - image[x + 2, y] + image[x + 2, y + 2]) / 4
+                    fxy11 = (image[x_lt, y_lt] - image[x_lt, y_lt + 2] - image[x_lt + 2, y_lt] + image[x_lt + 2, y_lt + 2]) / 4
                 except:
                     fxy11 = 0
+                # ----------------------distance coordinates --------distance coordinates------------distance coordinates-------
+                temp1 = np.array([1, (1 - (x_lb - v)), np.power((1 - (x_lb - v)), 2), np.power((1 - (x_lb - v)), 3)])
+                temp2 = np.array([[1, 0, 0, 0], [0, 0, 1, 0], [-3, 3, -2, -1], [2, -2, 1, 1]])
+                temp3 = np.array(
+                    [[f00, f01, fy00, fy01], [f10, f11, fy10, fy11], [fx00, fx01, fxy00, fxy01], [fx10, fx11, fxy10, fxy11]])
+                temp4 = np.array([[1, 0, -3, 2], [0, 0, 3, -2], [0, 1, -2, 1], [0, 0, -1, 1]])
+                temp5 = np.transpose(np.array([1, (1 - (y_rt - w)), np.power((1 - (y_rt - w)), 2), np.power((1 - (y_rt - w)), 3)]))
 
-                for step_x in range(scale + 1):
-                    for step_y in range(scale + 1):
-                        temp1 = np.array([1, step_x, np.power(step_x, 2), np.power(step_x, 3)])
-                        temp2 = np.array([[1, 0, 0, 0], [0, 0, 1, 0], [-3, 3, -2, -1], [2, -2, 1, 1]])
-                        temp3 = np.array(
-                            [[f00, f01, fy00, fy01], [f10, f11, fy10, fy11], [fx00, fx01, fxy00, fxy01], [fx10, fx11, fxy10, fxy11]])
-                        temp4 = np.array([[1, 0, -3, 2], [0, 0, 3, -2], [0, 1, -2, 1], [0, 0, -1, 1]])
-                        temp5 = np.transpose(np.array([1, step_y, np.power(step_y, 2), np.power(step_y, 3)]))
-
-                        img_target[x_lt + step_x, y_lt + step_y] = np.dot(np.dot(np.dot(np.dot(temp1, temp2), temp3), temp4), temp5)
+                img_target[x, y] = np.dot(np.dot(np.dot(np.dot(temp1, temp2), temp3), temp4), temp5)
 
     return img_target
 
 
 degree = -30
 
-result_nearest_neighbor = rotation(img_source, degree, method="nearest_neighbor")
+result_nearest_neighbor = rotation(img_source, degree, method="nearest_neighbors")
 result_bilinear = rotation(img_source, degree, method="bilinear")
+result_bicubic = rotation(img_source, degree, method="bicubic")
 
 # draw
 fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(8, 8), sharex=True, sharey=True)
@@ -161,6 +160,6 @@ ax[0, 1].set_title("scaling(nearest neighbor):clock wise {}'".format(np.abs(degr
 ax[0, 1].imshow(result_nearest_neighbor, cmap='gray')
 ax[1, 0].set_title("scaling(bilinear):clock wise {}'".format(np.abs(degree)))
 ax[1, 0].imshow(result_bilinear, cmap='gray')
-# ax[1, 1].set_title("scaling(bicubic):x{}".format(scale_factor))
-# ax[1, 1].imshow(result_bicubic, cmap='gray')
+ax[1, 1].set_title("scaling(bicubic):clock wise {}".format(np.abs(degree)))
+ax[1, 1].imshow(result_bicubic, cmap='gray')
 plt.show()
