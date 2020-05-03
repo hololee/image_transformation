@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 
 img_source = plt.imread("source.png")
 
+
 def scaling(image, scale, method):
     affine_matrix = np.array([[scale, 0, 0], [0, scale, 0], [0, 0, 1]])
 
@@ -31,8 +32,8 @@ def scaling(image, scale, method):
                     elif method == "bilinear":
                         for step_x in range(scale + 1):
                             for step_y in range(scale + 1):
-                                temp1 = image[x, y] * ((scale - step_x) / scale) + image[x, y + 1] * (step_x / scale)
-                                temp2 = image[x + 1, y] * ((scale - step_x) / scale) + image[x + 1, y + 1] * (step_x / scale)
+                                temp1 = image[x, y] * ((scale - step_x) / scale) + image[x + 1, y] * (step_x / scale)
+                                temp2 = image[x, y + 1] * ((scale - step_x) / scale) + image[x + 1, y + 1] * (step_x / scale)
                                 img_target[x_lt + step_x, y_lt + step_y] = temp1 * ((scale - step_y) / scale) + temp2 * (step_y / scale)
 
                     elif method == "bicubic":
@@ -130,4 +131,7 @@ ax[1, 0].set_title("scaling(bilinear):x{}".format(scale_factor))
 ax[1, 0].imshow(result_bilinear, cmap='gray')
 ax[1, 1].set_title("scaling(bicubic):x{}".format(scale_factor))
 ax[1, 1].imshow(result_bicubic, cmap='gray')
+
+plt.savefig("C:/Users/jh_work/PycharmProjects/image_transformation/results/{}.png".format("result_scaling"))
+
 plt.show()

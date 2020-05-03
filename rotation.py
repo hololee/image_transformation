@@ -162,4 +162,7 @@ ax[1, 0].set_title("rotation(bilinear):clock wise {}'".format(np.abs(degree)))
 ax[1, 0].imshow(result_bilinear, cmap='gray')
 ax[1, 1].set_title("rotation(bicubic):clock wise {}".format(np.abs(degree)))
 ax[1, 1].imshow(result_bicubic, cmap='gray')
+
+plt.savefig("C:/Users/jh_work/PycharmProjects/image_transformation/results/{}.png".format("result_rotation"))
+
 plt.show()

@@ -25,4 +25,7 @@ plt.imshow(img_source, cmap="gray")
 plt.subplot(1, 2, 2)
 plt.title("Identity")
 plt.imshow(img_target, cmap="gray")
+
+plt.savefig("C:/Users/jh_work/PycharmProjects/image_transformation/results/{}.png".format("result_identity"))
+
 plt.show()

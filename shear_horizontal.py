@@ -155,4 +155,7 @@ ax[1, 0].set_title("shear_horizontal(bilinear):{}'".format(np.abs(horizontal)))
 ax[1, 0].imshow(result_bilinear, cmap='gray')
 ax[1, 1].set_title("shear_horizontal(bicubic):{}".format(np.abs(horizontal)))
 ax[1, 1].imshow(result_bicubic, cmap='gray')
+
+plt.savefig("C:/Users/jh_work/PycharmProjects/image_transformation/results/{}.png".format("result_shear(horizontal)"))
+
 plt.show()
