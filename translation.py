@@ -4,25 +4,21 @@ import matplotlib.pyplot as plt
 img_source = plt.imread("source.png")
 
 
-def rotation(image, angle, method):
+def translation(image, distance, method):
     img_target = np.zeros(shape=image.shape)
 
-    center_x = image.shape[0] // 2
-    center_y = image.shape[1] // 2
+    distance_x = distance[0]
+    distance_y = distance[1]
 
-    angle = angle * np.pi / 180
-    affine_matrix_identity = np.array([[np.cos(angle), np.sin(angle), 0], [-np.sin(angle), np.cos(angle), 0], [0, 0, 1]])
+    affine_matrix_identity = np.array([[1, 0, 0], [0, 1, 0], [distance_x, distance_y, 1]])
 
     # target(rotated coordinate) (x, y)
     for x in range(image.shape[0] - 1):  # h
         for y in range(image.shape[1] - 1):  # w
-            map = np.array([x - center_x, y - center_y, 1])
+            map = np.array([x, y, 1])
 
             # original image coordinate (v, w)
             v, w, _ = np.matmul(map, np.linalg.inv(affine_matrix_identity))
-
-            v -= center_x
-            w -= center_y
 
             x_lt = int(v - 1)
             y_lt = int(w - 1)
@@ -146,20 +142,20 @@ def rotation(image, angle, method):
     return img_target
 
 
-degree = -30
+distance = (20, 20)
 
-result_nearest_neighbor = rotation(img_source, degree, method="nearest_neighbor")
-result_bilinear = rotation(img_source, degree, method="bilinear")
-result_bicubic = rotation(img_source, degree, method="bicubic")
+result_nearest_neighbor = translation(img_source, distance, method="nearest_neighbor")
+result_bilinear = translation(img_source, distance, method="bilinear")
+result_bicubic = translation(img_source, distance, method="bicubic")
 
 # draw
 fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(8, 8), sharex=True, sharey=True)
 ax[0, 0].set_title("original")
 ax[0, 0].imshow(img_source, cmap='gray')
-ax[0, 1].set_title("rotation(nearest neighbor):clock wise {}'".format(np.abs(degree)))
+ax[0, 1].set_title("translation(nearest neighbor):{}'".format(np.abs(distance)))
 ax[0, 1].imshow(result_nearest_neighbor, cmap='gray')
-ax[1, 0].set_title("rotation(bilinear):clock wise {}'".format(np.abs(degree)))
+ax[1, 0].set_title("translation(bilinear):{}'".format(np.abs(distance)))
 ax[1, 0].imshow(result_bilinear, cmap='gray')
-ax[1, 1].set_title("rotation(bicubic):clock wise {}".format(np.abs(degree)))
+ax[1, 1].set_title("translation(bicubic):{}".format(np.abs(distance)))
 ax[1, 1].imshow(result_bicubic, cmap='gray')
 plt.show()
