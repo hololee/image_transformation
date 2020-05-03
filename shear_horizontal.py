@@ -4,37 +4,30 @@ import matplotlib.pyplot as plt
 img_source = plt.imread("source.png")
 
 
-def rotation(image, angle, method):
+def shear_horizontal(image, horizontal, method):
     img_target = np.zeros(shape=image.shape)
 
-    center_x = image.shape[0] // 2
-    center_y = image.shape[1] // 2
-
-    angle = angle * np.pi / 180
-    affine_matrix = np.array([[np.cos(angle), np.sin(angle), 0], [-np.sin(angle), np.cos(angle), 0], [0, 0, 1]])
+    affine_matrix = np.array([[1, horizontal, 0], [0, 1, 0], [0, 0, 1]])
 
     # target(rotated coordinate) (x, y)
     for x in range(image.shape[0] - 1):  # h
         for y in range(image.shape[1] - 1):  # w
-            map = np.array([x - center_x, y - center_y, 1])
+            map = np.array([x, y, 1])
 
             # original image coordinate (v, w)
             v, w, _ = np.matmul(map, np.linalg.inv(affine_matrix))
 
-            v -= center_x
-            w -= center_y
+            x_lt = int(v)
+            y_lt = int(w)
 
-            x_lt = int(v - 1)
-            y_lt = int(w - 1)
+            x_rt = int(v)
+            y_rt = int(w + 1)
 
-            x_rt = int(v - 1)
-            y_rt = int(w)
+            x_lb = int(v + 1)
+            y_lb = int(w)
 
-            x_lb = int(v)
-            y_lb = int(w - 1)
-
-            x_rb = int(v)
-            y_rb = int(w)
+            x_rb = int(v + 1)
+            y_rb = int(w + 1)
 
             if method == "nearest_neighbor":
                 try:
@@ -146,20 +139,20 @@ def rotation(image, angle, method):
     return img_target
 
 
-degree = -30
+horizontal = 0.2
 
-result_nearest_neighbor = rotation(img_source, degree, method="nearest_neighbor")
-result_bilinear = rotation(img_source, degree, method="bilinear")
-result_bicubic = rotation(img_source, degree, method="bicubic")
+result_nearest_neighbor = shear_horizontal(img_source, horizontal, method="nearest_neighbor")
+result_bilinear = shear_horizontal(img_source, horizontal, method="bilinear")
+result_bicubic = shear_horizontal(img_source, horizontal, method="bicubic")
 
 # draw
 fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(8, 8), sharex=True, sharey=True)
 ax[0, 0].set_title("original")
 ax[0, 0].imshow(img_source, cmap='gray')
-ax[0, 1].set_title("rotation(nearest neighbor):clock wise {}'".format(np.abs(degree)))
+ax[0, 1].set_title("shear_horizontal(nearest neighbor):{}'".format(np.abs(horizontal)))
 ax[0, 1].imshow(result_nearest_neighbor, cmap='gray')
-ax[1, 0].set_title("rotation(bilinear):clock wise {}'".format(np.abs(degree)))
+ax[1, 0].set_title("shear_horizontal(bilinear):{}'".format(np.abs(horizontal)))
 ax[1, 0].imshow(result_bilinear, cmap='gray')
-ax[1, 1].set_title("rotation(bicubic):clock wise {}".format(np.abs(degree)))
+ax[1, 1].set_title("shear_horizontal(bicubic):{}".format(np.abs(horizontal)))
 ax[1, 1].imshow(result_bicubic, cmap='gray')
 plt.show()

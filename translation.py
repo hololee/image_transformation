@@ -20,17 +20,17 @@ def translation(image, distance, method):
             # original image coordinate (v, w)
             v, w, _ = np.matmul(map, np.linalg.inv(affine_matrix_identity))
 
-            x_lt = int(v - 1)
-            y_lt = int(w - 1)
+            x_lt = int(v)
+            y_lt = int(w)
 
-            x_rt = int(v - 1)
-            y_rt = int(w)
+            x_rt = int(v)
+            y_rt = int(w + 1)
 
-            x_lb = int(v)
-            y_lb = int(w - 1)
+            x_lb = int(v + 1)
+            y_lb = int(w)
 
-            x_rb = int(v)
-            y_rb = int(w)
+            x_rb = int(v + 1)
+            y_rb = int(w + 1)
 
             if method == "nearest_neighbor":
                 try:

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 img_source = plt.imread("source.png")
 
 def scaling(image, scale, method):
-    affine_matrix_identity = np.array([[scale, 0, 0], [0, scale, 0], [0, 0, 1]])
+    affine_matrix = np.array([[scale, 0, 0], [0, scale, 0], [0, 0, 1]])
 
     img_target = np.zeros([image.shape[0] * scale, image.shape[1] * scale])
 
@@ -14,7 +14,7 @@ def scaling(image, scale, method):
         for y in range(image.shape[1] - 1):  # w
             # Left Top
             map_lt = np.array([x, y, 1])
-            x_lt, y_lt, _ = np.matmul(map_lt, affine_matrix_identity)
+            x_lt, y_lt, _ = np.matmul(map_lt, affine_matrix)
 
             for step_x in range(scale + 1):
                 for step_y in range(scale + 1):
