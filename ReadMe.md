@@ -1,6 +1,6 @@
 <H1>Affine Transformation and histogram equalization</H1>
 
-<h3> Affine transformation </h3>
+* <h3> Affine transformation </h3>
 
 <h4> - code </h4>
 
@@ -20,7 +20,7 @@ shear_horizontal.py: Shear affine transformation. (horizontal way)
   
 ---
 
-<h3> Histogram equalization </h3>
+* <h3> Histogram equalization </h3>
 
 <h4> - code </h4>
 
